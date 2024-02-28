@@ -1,5 +1,3 @@
-import { DatasetSample } from "../datasets/types";
-
 export interface Theme {
   accentColor: string;
   bgColor: string;
@@ -9,15 +7,4 @@ export interface Theme {
   botMessageTextColor: string;
   size: "sm" | "lg";
   rounded: string;
-}
-
-export interface HistoryItem {
-  type: "text";
-  message_id: string;
-  from_: "bot" | "user";
-  content: string;
-  dataset_samples: DatasetSample[];
-  tags: string[];
-  user_feedback: string;
-  timestamp: string;
 }

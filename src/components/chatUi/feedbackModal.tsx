@@ -22,12 +22,10 @@ export default function FeedbackModal({
   };
 
   return (
-    <div
+    <div // backdrop
       className="absolute bottom-0 end-0 start-0 top-0 z-10 flex flex-col justify-center overflow-y-auto bg-gray-50 bg-opacity-10 backdrop-blur-sm"
       onClick={() => onClose({ status: "cancel", content: "" })}
     >
-      {" "}
-      // backdrop
       <div
         className="shadow my-2 w-11/12 max-w-4xl shrink -translate-y-12 rounded-lg bg-white p-5"
         onClick={(e) => e.stopPropagation()}

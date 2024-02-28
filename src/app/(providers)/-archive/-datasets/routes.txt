@@ -1,0 +1,8 @@
+/datasets √
+/samples?datasetId={} -
+/sample?sampleId={}
+
+/create-dataset
+/create-sample?datasetId={}
+
+/edit-sample?datasetId={}&sampleId={}

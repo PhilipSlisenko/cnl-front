@@ -1,3 +1,4 @@
+import { ConversationHistoryMessage } from "@/types/loggedConversations";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ import BlocksContainer from "./blocksContainer";
 import { defaultTheme } from "./defaultTheme";
 import FeedbackModal from "./feedbackModal";
 import { ThemeContext } from "./themeContext";
-import { HistoryItem, Theme } from "./types";
+import { Theme } from "./types";
 
 export default function ChatUI({
   history,
@@ -19,7 +20,7 @@ export default function ChatUI({
   allowFeedback = false,
   theme = defaultTheme,
 }: {
-  history: HistoryItem[];
+  history: ConversationHistoryMessage[];
   showTypingAnimation?: boolean;
   allowMessageSend?: boolean;
   onMessageSend?: Function;
@@ -29,12 +30,15 @@ export default function ChatUI({
   theme?: Theme;
 }) {
   // Input
-  const [historyState, setHistoryState] = useState<HistoryItem[]>([]);
+  const [historyState, setHistoryState] = useState<
+    ConversationHistoryMessage[]
+  >([]);
   const [blockContainerPaddingBottom, setBlockContainerPaddingBottom] =
     useState<number>(allowMessageSend ? 100 : 0);
   const [userInput, setUserInput] = useState<string>("");
 
-  // see your height without rendering any messages - fixate that height and render messages
+  // #region - Limit the height of ChatUI to initially provided space
+  // See your height without rendering any messages - fixate that height and render messages
   const [chatMaxHeight, setChatMaxHeight] = useState<number>(0);
 
   useEffect(() => {
@@ -45,6 +49,7 @@ export default function ChatUI({
 
     console.log(`Chat UI height: ${chatUiHeight}px`);
   }, []);
+  // #endregion
 
   useEffect(() => {
     setHistoryState(history);
@@ -71,6 +76,7 @@ export default function ChatUI({
       "--cnl-typing-animation-dots-color",
       theme.botMessageTextColor
     );
+    document.documentElement.style.setProperty("--cnl-bg-color", theme.bgColor);
   }, [theme]);
 
   const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false);
@@ -82,7 +88,7 @@ export default function ChatUI({
       <div
         id="cnl-chat-ui"
         className={clsx(
-          "relative mx-auto h-full w-full max-w-screen-md flex-col items-center"
+          "relative mx-auto h-full w-full max-w-screen-md flex-col items-center "
         )}
         style={{
           backgroundColor: theme.bgColor,
@@ -105,11 +111,13 @@ export default function ChatUI({
         {/* Input */}
         {allowMessageSend && (
           <div
-            className={`absolute bottom-0 flex w-full  rounded-3xl  bg-gradient-to-t from-[${theme.bgColor}] from-90% pb-3 pl-3 pt-3`}
+            className={clsx(
+              `absolute bottom-0 flex w-full  rounded-3xl bg-gradient-to-t from-[var(--cnl-bg-color)] from-60% pb-3 pl-3 pt-3 `
+            )}
           >
             <TextareaAutosize
               maxRows={2}
-              className="no-scrollbar border-1 flex-grow resize-none  rounded-3xl border-gray-100 p-3 shadow focus:border-none focus:outline-none  focus:ring-0"
+              className="flex-grow resize-none  rounded-3xl p-3 shadow focus:border-none focus:outline-none  focus:ring-0"
               onHeightChange={(height) => {
                 setBlockContainerPaddingBottom(height + 16);
               }}
@@ -121,7 +129,7 @@ export default function ChatUI({
               className="my-1 ml-2 mr-3 max-h-full"
               onClick={() => handleMessageSend()}
             >
-              <PaperAirplaneIcon className="size-5" />
+              <PaperAirplaneIcon className="size-7 opacity-80" />
             </button>
           </div>
         )}
@@ -133,6 +141,8 @@ export default function ChatUI({
             />,
             document.getElementById("cnl-chat-ui") as Element
           )}
+        {/* Infinity pool top strip */}
+        {/* <div className="w-full h-2 absolute bg-gradient-to-b from-[var(--cnl-bg-color)] top-0"></div> */}
       </div>
     </ThemeContext.Provider>
   );

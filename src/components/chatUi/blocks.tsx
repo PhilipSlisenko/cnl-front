@@ -4,7 +4,8 @@ import { ThemeContext } from "./themeContext";
 
 import clsx from "clsx";
 import { ThumbsDown } from "lucide-react";
-import { HistoryItem } from "./types";
+
+import { ConversationHistoryMessage } from "@/types/loggedConversations";
 import styles from "./typingAnimationBlock.module.css";
 
 const inter = Inter({ subsets: ["cyrillic", "greek", "latin", "vietnamese"] });
@@ -43,7 +44,7 @@ export function BotMessageBlock({
 }) {
   const theme = useContext(ThemeContext);
   const commonClasses = clsx(
-    "rounded-2xl px-3 py-2 shadow  mx-1 max-w-max",
+    "rounded-2xl px-3 py-2 shadow  mx-1 max-w-max whitespace-pre-wrap",
     inter.className
   );
   const botMessageClasses = clsx("rounded-bl-none mr-2");
@@ -82,7 +83,7 @@ export function BotMessageBlock({
               className="rounded-sm p-1 hover:bg-gray-200"
               onClick={handleDislikeClick}
             >
-              <ThumbsDown className="w-4" />
+              <ThumbsDown className="size-4" />
             </button>
           </div>
         )}
@@ -94,7 +95,7 @@ export function BotMessageBlock({
 export function UserMessageBlock({ content }: { content: string }) {
   const theme = useContext(ThemeContext);
   const commonClasses = clsx(
-    "rounded-2xl px-3 py-2 shadow mx-1 max-w-max",
+    "rounded-2xl px-3 py-2 shadow mx-1 max-w-max whitespace-pre-wrap",
     inter.className
   );
   const userMessageClasses = clsx("rounded-br-none ml-2");
@@ -116,11 +117,11 @@ export function UserMessageBlock({ content }: { content: string }) {
 }
 
 export function getBlockElement(
-  block: HistoryItem,
+  block: ConversationHistoryMessage,
   allowFeedback: boolean,
   onFeedback: Function
 ): React.ReactElement | undefined {
-  if (block.type === "text" && block.from_ === "bot") {
+  if (block.from_ === "bot") {
     return (
       <BotMessageBlock
         content={block.content}
@@ -129,7 +130,7 @@ export function getBlockElement(
         allowFeedback={allowFeedback}
       />
     );
-  } else if (block.type === "text" && block.from_ === "user") {
+  } else if (block.from_ === "user") {
     return <UserMessageBlock content={block.content} key={block.message_id} />;
   }
 }

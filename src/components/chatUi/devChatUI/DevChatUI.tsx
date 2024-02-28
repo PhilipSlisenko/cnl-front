@@ -1,6 +1,5 @@
 import ChatUI from "@/components/chatUi/chatUi";
 import { Button } from "@/components/ui/button";
-import { mockConversationHistory } from "./mockConversationHistory";
 
 // ChatUIAndDebugWindow
 export default function DevChatUI() {
@@ -11,7 +10,7 @@ export default function DevChatUI() {
           <Button className="w-full">New Conversation</Button>
         </div>
         <div className="grow rounded-t-lg border-t overflow-hidden">
-          <ChatUI history={mockConversationHistory}></ChatUI>
+          <ChatUI history={[]}></ChatUI>
         </div>
       </div>
       <div className="w-[400px] border rounded-lg">Debug window</div>

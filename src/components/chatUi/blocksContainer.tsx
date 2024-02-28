@@ -1,8 +1,8 @@
+import { ConversationHistoryMessage } from "@/types/loggedConversations";
 import { Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { TypingAnimationBlock, getBlockElement } from "./blocks";
-import { HistoryItem } from "./types";
-
+import styles from "./noScrollBar.module.css";
 function BlockTopMarginWrapper({
   children,
   type,
@@ -50,7 +50,7 @@ export default function BlocksContainer({
   allowFeedback = false,
   onFeedback = () => {},
 }: {
-  blocks: HistoryItem[];
+  blocks: ConversationHistoryMessage[];
   paddingBottom?: number;
   showTypingAnimation?: boolean;
   allowMessageClick?: boolean;
@@ -59,13 +59,14 @@ export default function BlocksContainer({
   onFeedback?: Function;
 }) {
   const customStyles: React.CSSProperties = {
-    paddingBottom: `${paddingBottom}px`,
+    paddingBottom: `${paddingBottom + 5}px`,
   };
 
   return (
     <div
       className={clsx(
-        "no-scrollbar h-full max-h-full gap-2 overflow-auto px-4"
+        "h-full max-h-full gap-2 overflow-auto px-4",
+        styles["no-scrollbar"]
       )}
       style={customStyles}
     >
@@ -96,7 +97,7 @@ export default function BlocksContainer({
           );
         }
         if (index === blocks.length - 1) {
-          return (
+          BlockComponentToRender = (
             <BlockAppearAnimationWrapper>
               {BlockComponentToRender}
             </BlockAppearAnimationWrapper>
